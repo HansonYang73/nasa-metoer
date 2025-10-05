@@ -14,7 +14,7 @@ a = [1,2,3,4]
 for i in range(asteroids['element_count']):
     #pprint.pprint(asteroids['near_earth_objects']['2025-09-03'][i]['absolute_magnitude_h'])
     ...
-pprint.pprint(mass(asteroids['near_earth_objects']['2025-09-03'][0]))
+
 
 
 
@@ -23,23 +23,30 @@ pprint.pprint(mass(asteroids['near_earth_objects']['2025-09-03'][0]))
 
 
 def kE(astData) -> float:
-    return 0.5*4*2
+    
+    v_impact = (float(astData["close_approach_data"][0]["relative_velocity"]["kilometers_per_second"]) ** 2 + 11.2 ** 2) ** 0.5
+    
+    return 0.5 * mass(astData) * v_impact**2
 
 
-def impactForce(d: float) -> float : 
-    return kE()/d
+def convert_to_TNT(kE: float) -> float : 
+    return kE/(4.184*10**9)
+
+
 
 def mass(astData)-> float :
-    d=(astData["estimated_diameter_min"]+astData["estimated_diameter_max"])/2
+    d=(astData["estimated_diameter"]["meters"]["estimated_diameter_min"]+astData["estimated_diameter"]["meters"]["estimated_diameter_max"])/2
     r=d/2
-    v=(4/3)*math.pi*r^3
+    v=(4/3)*math.pi*r**3
     return 3300*v
 
 
 
+# calculate tsunamis and earthkaque
 
 
 
 
 
-
+pprint.pprint(mass(asteroids['near_earth_objects']['2025-09-03'][0]))
+pprint.pprint(kE(asteroids['near_earth_objects']['2025-09-03'][0]))
